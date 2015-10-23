@@ -64,7 +64,8 @@ echo "===> Installing Ansible..."
 pip install ansible==$ANSIBLE_VERSION
 
 echo "===> Installing other interesting stuff..."
-pip install apache-libcloud
+apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev
+pip install apache-libcloud boto docker-py shade PyVmomi
 
 #==========================================================#
 
@@ -79,6 +80,7 @@ apt-get install -y curl wget
 sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"  || true
 
 sed -i -e 's/plugins\=.*/plugins=\(git systemd zsh_reload ansible ssh-agent sublime\)/'   $ZSHRC_FULLPATH
+sed -i -e 's/ZSH_THEME\=.*/ZSH_THEME="kolo"/'   $ZSHRC_FULLPATH
 
 
 echo "===> Done!"

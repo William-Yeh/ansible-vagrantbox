@@ -11,6 +11,8 @@ Vagrant Box for Ansible Control Machine
 
 - [Ansible](https://github.com/ansible/ansible), of course.
 
+- Some supporting stuff for Ansible [Cloud Modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html). 
+
 - [Zsh](http://www.zsh.org/)
 
 - [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
