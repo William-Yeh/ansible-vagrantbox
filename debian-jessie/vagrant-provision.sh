@@ -14,6 +14,7 @@ export LANGUAGE=en_US.UTF-8
 readonly ANSIBLE_VERSION=1.9.4
 readonly ZSH_FULLPATH=/usr/bin/zsh
 readonly ZSHRC_FULLPATH=/home/vagrant/.zshrc
+readonly OHMYZSH_FULLPATH=/home/vagrant/.oh-my-zsh
 
 
 #==========================================================#
@@ -74,7 +75,7 @@ pip install apache-libcloud boto docker-py shade PyVmomi
 #==========================================================#
 
 echo "===> Installing handy utilities..."
-apt-get install -y ack-grep
+apt-get install -y htop ack-grep
 
 
 echo "===> Installing Zsh..."
@@ -91,7 +92,12 @@ sed -i -e 's/plugins\=.*/plugins=\(git systemd zsh_reload ansible ssh-agent subl
 sed -i -e 's/ZSH_THEME\=.*/ZSH_THEME="kolo"/'   $ZSHRC_FULLPATH
 
 
-cat <<-EOZSHCUSTOM  > /home/vagrant/.oh-my-zsh/custom/ansible-control-machine.zsh
+cat <<-EOZSHCUSTOM  >> $ZSHRC_FULLPATH
+
+#-----
+# customize for this Ansible control machine
+#-----
+
   export PROMPT='%B%F{magenta}%c%B%F{green}\${vcs_info_msg_0_}%B%F{magenta} %{\$reset_color%}\$ '
   export LC_CTYPE=C.UTF-8
 
@@ -100,6 +106,9 @@ cat <<-EOZSHCUSTOM  > /home/vagrant/.oh-my-zsh/custom/ansible-control-machine.zs
   #export ANSIBLE_HOST_KEY_CHECKING=false
 EOZSHCUSTOM
 
+
+chown -R vagrant $ZSHRC_FULLPATH $OHMYZSH_FULLPATH
+chgrp -R vagrant $ZSHRC_FULLPATH $OHMYZSH_FULLPATH
 
 echo "===> Done!"
 

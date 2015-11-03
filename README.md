@@ -17,6 +17,8 @@ Vagrant Box for Ansible Control Machine
 
 - [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
 
+- A few handy tools, such as [ack](http://beyondgrep.com/), [htop](http://hisham.hm/htop/).
+
 
 ## Purpose
 
