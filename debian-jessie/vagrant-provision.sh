@@ -92,7 +92,7 @@ sed -i -e 's/ZSH_THEME\=.*/ZSH_THEME="kolo"/'   $ZSHRC_FULLPATH
 
 
 cat <<-EOZSHCUSTOM  > /home/vagrant/.oh-my-zsh/custom/ansible-control-machine.zsh
-  export PROMPT='%B%F{magenta}%c%B%F{green}${vcs_info_msg_0_}%B%F{magenta} %{$reset_color%}$ '
+  export PROMPT='%B%F{magenta}%c%B%F{green}\${vcs_info_msg_0_}%B%F{magenta} %{\$reset_color%}\$ '
   export LC_CTYPE=C.UTF-8
 
   #-- disable "host key checking" for convenience;
