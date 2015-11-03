@@ -45,6 +45,10 @@ sed -i -e  's/127.0.0.1\s.*/127.0.0.1\tlocalhost ANSIBLE/' /etc/hosts
 cat <<-EOBASHRC  >> /home/vagrant/.bashrc
   export PS1='\[\033[01;32m\]\u@\h\[\033[01;34m\] \w \$\[\033[00m\] '
   export LC_CTYPE=C.UTF-8
+
+  #-- disable "host key checking" for convenience;
+  #-- @see http://docs.ansible.com/ansible/intro_getting_started.html#host-key-checking
+  #export ANSIBLE_HOST_KEY_CHECKING=false
 EOBASHRC
 
 
@@ -69,6 +73,10 @@ pip install apache-libcloud boto docker-py shade PyVmomi
 
 #==========================================================#
 
+echo "===> Installing handy utilities..."
+apt-get install -y ack-grep
+
+
 echo "===> Installing Zsh..."
 apt-get install -y zsh
 chsh -s $ZSH_FULLPATH root
@@ -81,6 +89,16 @@ sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/i
 
 sed -i -e 's/plugins\=.*/plugins=\(git systemd zsh_reload ansible ssh-agent sublime\)/'   $ZSHRC_FULLPATH
 sed -i -e 's/ZSH_THEME\=.*/ZSH_THEME="kolo"/'   $ZSHRC_FULLPATH
+
+
+cat <<-EOZSHCUSTOM  > /home/vagrant/.oh-my-zsh/custom/ansible-control-machine.zsh
+  export PROMPT='%B%F{magenta}%c%B%F{green}${vcs_info_msg_0_}%B%F{magenta} %{$reset_color%}$ '
+  export LC_CTYPE=C.UTF-8
+
+  #-- disable "host key checking" for convenience;
+  #-- @see http://docs.ansible.com/ansible/intro_getting_started.html#host-key-checking
+  #export ANSIBLE_HOST_KEY_CHECKING=false
+EOZSHCUSTOM
 
 
 echo "===> Done!"
