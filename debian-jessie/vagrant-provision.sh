@@ -11,7 +11,6 @@ export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 
-readonly ANSIBLE_VERSION=1.9.4
 readonly ZSH_FULLPATH=/usr/bin/zsh
 readonly ZSHRC_FULLPATH=/home/vagrant/.zshrc
 readonly OHMYZSH_FULLPATH=/home/vagrant/.oh-my-zsh
@@ -59,20 +58,56 @@ sudo apt-get update
 
 #==========================================================#
 
-echo "===> Installing required Python stuff..."
-DEBIAN_FRONTEND=noninteractive         \
-apt-get install -y                     \
-    python-pip python-dev python-yaml  \
-    sshpass git
+echo "===> Adding Ansible's prerequisites..."
+apt-get update -y
+DEBIAN_FRONTEND=noninteractive  \
+    apt-get install --no-install-recommends -y -q  \
+            build-essential                        \
+            python-pip python-dev python-yaml      \
+            libxml2-dev libxslt1-dev zlib1g-dev    \
+            python-software-properties apt-transport-https \
+            sshpass git
 
-echo "===> Installing Ansible..."
-pip install ansible==$ANSIBLE_VERSION
+pip install --upgrade pyyaml jinja2 pycrypto
 
-echo "===> Installing other interesting stuff..."
-apt-get install -y libxml2-dev libxslt1-dev zlib1g-dev
-pip install apache-libcloud boto docker-py shade PyVmomi
+
+echo "===> Downloading Ansible's source tree..."
+cd /
+git clone git://github.com/ansible/ansible.git --recursive
+
+
+echo "===> Compiling Ansible..."
+cd ansible
+bash -c 'source ./hacking/env-setup'
+cd /
+
+echo "===> Moving useful Ansible stuff to /opt/ansible ..."
+mkdir -p /opt/ansible
+mv /ansible/bin   /opt/ansible/bin
+mv /ansible/lib   /opt/ansible/lib
+mv /ansible/docs  /opt/ansible/docs
+rm -rf /ansible
+
+
+echo "===> Setting Ansible PATH for bash ..."
+cat <<"EOPROFILE"  > /etc/profile.d/ansible_setting.sh
+#-----
+# customize for this Ansible control machine
+#-----
+
+export PATH=/opt/ansible/bin:$PATH
+export PYTHONPATH=/opt/ansible/lib:$PYTHONPATH
+export MANPATH=/opt/ansible/docs/man:$MANPATH
+EOPROFILE
+
+chmod a+x /etc/profile.d/ansible_setting.sh
+
 
 #==========================================================#
+
+echo "===> Installing other interesting stuff..."
+pip install --upgrade apache-libcloud boto docker-py shade PyVmomi
+
 
 echo "===> Installing handy utilities..."
 apt-get install -y htop ack-grep
@@ -101,9 +136,14 @@ cat <<-EOZSHCUSTOM  >> $ZSHRC_FULLPATH
   export PROMPT='%B%F{magenta}%c%B%F{green}\${vcs_info_msg_0_}%B%F{magenta} %{\$reset_color%}\$ '
   export LC_CTYPE=C.UTF-8
 
+  #-- Ansible path and resources
+  export PATH=/opt/ansible/bin:\$PATH
+  export PYTHONPATH=/opt/ansible/lib:\$PYTHONPATH
+  export MANPATH=/opt/ansible/docs/man:\$MANPATH
+
   #-- disable "host key checking" for convenience;
   #-- @see http://docs.ansible.com/ansible/intro_getting_started.html#host-key-checking
-  #export ANSIBLE_HOST_KEY_CHECKING=false
+  export ANSIBLE_HOST_KEY_CHECKING=false
 EOZSHCUSTOM
 
 
