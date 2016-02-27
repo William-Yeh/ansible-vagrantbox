@@ -7,11 +7,11 @@ Vagrant Box for Ansible Control Machine
 
 ## Included software
 
-- [debian-8.2.0-amd64](http://cdimage.debian.org/cdimage/release/8.2.0/amd64/) for its smaller size than Ubuntu.
+- [debian-8.3.0-amd64](http://cdimage.debian.org/cdimage/release/8.3.0/amd64/) for its smaller size than Ubuntu.
 
 - [Ansible](https://github.com/ansible/ansible), of course.
 
-- Some supporting stuff for Ansible [Cloud Modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html). 
+- Some supporting stuff for Ansible [Cloud Modules](http://docs.ansible.com/ansible/list_of_cloud_modules.html).
 
 - [Zsh](http://www.zsh.org/)
 
@@ -110,4 +110,4 @@ packer push ansible-control-machine.json
 
 Licensed under [MIT license](http://creativecommons.org/licenses/MIT/).
 
-Copyright © 2015 William Yeh - [https://github.com/William-Yeh](https://github.com/William-Yeh).
+Copyright © 2015-2016 William Yeh - [https://github.com/William-Yeh](https://github.com/William-Yeh).
